@@ -24,15 +24,19 @@
 #include "openbl_mem.h"
 #include "openbl_usart_cmd.h"
 #include "iwdg_interface.h"
+#include "ram_interface.h"
+#include "flash_interface.h"
+#include "systemmemory_interface.h"
+#include "optionbytes_interface.h"
 /*
 #include "i2c_interface.h"
-#include "flash_interface.h"
-#include "ram_interface.h"
-#include "optionbytes_interface.h"
+
+
+
 
 #include "otp_interface.h"
 
-#include "systemmemory_interface.h"
+
 #include "openbl_i2c_cmd.h"
 */
 
@@ -68,6 +72,11 @@ static OPENBL_OpsTypeDef IWDG_Ops =
 /* External variables --------------------------------------------------------*/
 extern OPENBL_MemoryTypeDef FLASH_Descriptor;
 extern OPENBL_MemoryTypeDef RAM_Descriptor;
+extern OPENBL_MemoryTypeDef OB_Descriptor;
+extern OPENBL_MemoryTypeDef OTP_Descriptor;
+extern OPENBL_MemoryTypeDef ICP1_Descriptor;
+extern OPENBL_MemoryTypeDef ICP2_Descriptor;
+
 
 
 /* Private function prototypes -----------------------------------------------*/
@@ -98,6 +107,11 @@ void OpenBootloader_Init(void)
   /* Initialise memories */
   OPENBL_MEM_RegisterMemory(&FLASH_Descriptor);
   OPENBL_MEM_RegisterMemory(&RAM_Descriptor);
+  OPENBL_MEM_RegisterMemory(&OB_Descriptor);
+  OPENBL_MEM_RegisterMemory(&OTP_Descriptor);
+  OPENBL_MEM_RegisterMemory(&ICP1_Descriptor);
+  OPENBL_MEM_RegisterMemory(&ICP2_Descriptor);
+
 }
 
 /**
@@ -107,6 +121,24 @@ void OpenBootloader_Init(void)
   */
 void OpenBootloader_DeInit(void)
 {
+  __HAL_RCC_APB1_FORCE_RESET();
+  __HAL_RCC_APB1_RELEASE_RESET();
+
+  __HAL_RCC_APB2_FORCE_RESET();
+  __HAL_RCC_APB2_RELEASE_RESET();
+
+  __HAL_RCC_AHB1_FORCE_RESET();
+  __HAL_RCC_AHB1_RELEASE_RESET();
+
+  __HAL_RCC_AHB2_FORCE_RESET();
+  __HAL_RCC_AHB2_RELEASE_RESET();
+
+  __HAL_RCC_AHB3_FORCE_RESET();
+  __HAL_RCC_AHB3_RELEASE_RESET();
+
+  SysTick->CTRL = 0;
+  SysTick->LOAD = 0;
+  SysTick->VAL = 0;
   OPENBL_DeInit();
 }
 

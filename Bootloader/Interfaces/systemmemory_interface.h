@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    platform.h
+  * @file    systemmemory_interface.h
   * @author  MCD Application Team
-  * @brief   Header for patterns
+  * @brief   Header for systemmemory_interface.c module
   ******************************************************************************
   * @attention
   *
@@ -17,25 +17,22 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef PLATFORM_H
-#define PLATFORM_H
+#ifndef SYSTEMMEMORY_INTERFACE_H
+#define SYSTEMMEMORY_INTERFACE_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
-#include "stm32f4xx_hal.h"
-#include "cmsis_gcc.h"
-#include "stm32f4xx_hal_rcc.h"
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
+uint8_t OPENBL_ICP_Read(uint32_t Address);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* PLATFORM_H */
+#endif /* SYSTEMMEMORY_INTERFACE_H */

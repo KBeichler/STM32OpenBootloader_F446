@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    platform.h
+  * @file    ram_interface.h
   * @author  MCD Application Team
-  * @brief   Header for patterns
+  * @brief   Header for ram_interface.c module
   ******************************************************************************
   * @attention
   *
@@ -17,25 +17,24 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef PLATFORM_H
-#define PLATFORM_H
+#ifndef RAM_INTERFACE_H
+#define RAM_INTERFACE_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
-#include "stm32f4xx_hal.h"
-#include "cmsis_gcc.h"
-#include "stm32f4xx_hal_rcc.h"
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
+void OPENBL_RAM_JumpToAddress(uint32_t Address);
+uint8_t OPENBL_RAM_Read(uint32_t Address);
+void OPENBL_RAM_Write(uint32_t Address, uint8_t *Data, uint32_t DataLength);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* PLATFORM_H */
+#endif /* RAM_INTERFACE_H */

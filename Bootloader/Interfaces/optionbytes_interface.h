@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    platform.h
+  * @file    optionbytes_interface.h
   * @author  MCD Application Team
-  * @brief   Header for patterns
+  * @brief   Header for optionbytes_interface.c module
   ******************************************************************************
   * @attention
   *
@@ -17,25 +17,24 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef PLATFORM_H
-#define PLATFORM_H
+#ifndef OPTIONBYTES_INTERFACE_H
+#define OPTIONBYTES_INTERFACE_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
-#include "stm32f4xx_hal.h"
-#include "cmsis_gcc.h"
-#include "stm32f4xx_hal_rcc.h"
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
+uint8_t OPENBL_OB_Read(uint32_t Address);
+void OPENBL_OB_Write(uint32_t Address, uint8_t *Data, uint32_t DataLength);
+void OPENBL_OB_Launch(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* PLATFORM_H */
+#endif /* OPTIONBYTES_INTERFACE_H */

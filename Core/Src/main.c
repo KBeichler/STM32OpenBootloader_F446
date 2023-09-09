@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "openbl_core.h"
 #include "usart_interface.h" 
+#include "Bootloader.h"
 
 #include "test.h"
 /* USER CODE END Includes */
@@ -61,7 +62,7 @@ static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
-
+typedef void (*Function_Pointer)(void);
 /**
   * @brief  The application entry point.
   * @retval int
@@ -78,31 +79,28 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+  
 
   /* USER CODE END Init */
 
   /* Configure the system clock */
   SystemClock_Config();
-
   /* USER CODE BEGIN SysInit */
 
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  //MX_USART2_UART_Init();
 
   /* USER CODE BEGIN 2 */
-
+  OpenBootloader_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-    for (int i = 0; i<9999999; i++);;
-    testUART();
+    OpenBootloader_ProtocolDetection();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

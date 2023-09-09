@@ -35,7 +35,7 @@ extern "C" {
 #define DEVICE_ID_LSB                     0x82U  /* LSB byte of device ID */
 
 /* -------------------------- Definitions for Memories ---------------------- */
-#define FLASH_BL_SIZE                     (512 * 1024U)  /* Size of FLASH 512KJ */
+#define FLASH_BL_SIZE                     (512 * 1024U)  /* Size of FLASH 512K */
 #define FLASH_START_ADDRESS               FLASH_BASE  /* start of Flash  */
 #define FLASH_END_ADDRESS                 (FLASH_BASE + FLASH_BL_SIZE)  /* end of Flash  */
 
@@ -43,17 +43,21 @@ extern "C" {
 #define RAM_START_ADDRESS                 0x20000000U  /* start of SRAM  */
 #define RAM_END_ADDRESS                   (RAM_START_ADDRESS + RAM_SIZE)  /* end of SRAM  */
 
-#define OB_SIZE                           64U  /* Size of OB 64 Byte */
-#define OB_START_ADDRESS                  0x40022040U  /* Option bytes registers address */
+#define OB_SIZE                           16U  /* Size of OB 64 Byte */
+#define OB_START_ADDRESS                  0x1FFFC000  /* Option bytes registers address */
 #define OB_END_ADDRESS                    (OB_START_ADDRESS + OB_SIZE)  /* Option bytes end address*/
 
-#define OTP_BL_SIZE                       512U  /* Size of OTP 512 Byte */
-#define OTP_START_ADDRESS                 0x0BFA0000U  /* OTP registers address */
+#define OTP_BL_SIZE                       528U  /* Size of OTP 512 Byte */
+#define OTP_START_ADDRESS                 0x1FFF7800  /* OTP registers address */
 #define OTP_END_ADDRESS                   (OTP_START_ADDRESS + OTP_BL_SIZE)  /* OTP end address */
 
-#define ICP_SIZE                          (32U * 1024U)  /* Size of ICP 32 kByte */
-#define ICP_START_ADDRESS                 0x0BF90000U  /* System memory registers address */
+#define ICP_SIZE                          (30U * 1024U)  /* Size of ICP 32 kByte */
+#define ICP_START_ADDRESS                 0x1FFF0000 /* System memory registers address */
 #define ICP_END_ADDRESS                   (ICP_START_ADDRESS + ICP_SIZE)  /* System memory registers end address */
+
+#define ICP2_SIZE                          (30U * 1024U)  /* Size of ICP 32 kByte */
+#define ICP2_START_ADDRESS                 0x40000000 /* System memory registers address */
+#define ICP2_END_ADDRESS                   0x40030000  /* System memory registers end address */
 
 #define EB_SIZE                           1120U  /* Size of Engi bytes 1120 Byte */
 #define EB_START_ADDRESS                  0x0BFA0500U  /* Engi bytes start address */

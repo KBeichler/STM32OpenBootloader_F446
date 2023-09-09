@@ -39,6 +39,10 @@ C_SOURCES =  \
 Bootloader/Interfaces/common_interface.c \
 Bootloader/Interfaces/flash_interface.c \
 Bootloader/Interfaces/iwdg_interface.c \
+Bootloader/Interfaces/optionbytes_interface.c \
+Bootloader/Interfaces/otp_interface.c \
+Bootloader/Interfaces/ram_interface.c \
+Bootloader/Interfaces/systemmemory_interface.c \
 Bootloader/Interfaces/usart_interface.c \
 Bootloader/Modules/openbl_mem.c \
 Bootloader/Modules/openbl_usart_cmd.c \

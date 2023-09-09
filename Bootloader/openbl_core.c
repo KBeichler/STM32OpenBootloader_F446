@@ -55,6 +55,7 @@ void OPENBL_Init(void)
   */
 void OPENBL_DeInit(void)
 {
+  HAL_RCC_DeInit();
    // TODO stuff here
    // bring device into safe state
 }
