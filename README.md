@@ -1,8 +1,11 @@
 # STM OpenBootLoader Port to STM32F446RE Nucleo Board
 
+With this Bootloader the Chip can be programmed with the STM32CubeProgrammer. An example programm is in the examples folder.
+
 This Project was created with the stm32-for-vscode externsion.
 
 Links:
+
 [OpenBootLoader on Github](https://github.com/STMicroelectronics/stm32-mw-openbl)
 
 [Bootloader Info](https://www.st.com/resource/en/application_note/cd00167594-stm32-microcontroller-system-memory-boot-mode-stmicroelectronics.pdf)
