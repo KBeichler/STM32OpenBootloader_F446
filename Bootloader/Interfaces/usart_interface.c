@@ -28,7 +28,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 static uint8_t UsartDetected = 0U;
-static UART_HandleTypeDef huart2;
+UART_HandleTypeDef huart2;
 /* Exported variables --------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 static void OPENBL_USART_Init(void);

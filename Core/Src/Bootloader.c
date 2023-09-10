@@ -42,6 +42,7 @@
 /* Private variables ---------------------------------------------------------*/
 static OPENBL_HandleTypeDef USART_Handle;
 static OPENBL_HandleTypeDef IWDG_Handle;
+extern UART_HandleTypeDef huart2;
 
 
 
@@ -117,6 +118,9 @@ void OpenBootloader_Init(void)
   */
 void OpenBootloader_DeInit(void)
 {
+  HAL_UART_MspDeInit(&huart2);
+  HAL_RCC_DeInit();
+
   __HAL_RCC_APB1_FORCE_RESET();
   __HAL_RCC_APB1_RELEASE_RESET();
 
@@ -132,9 +136,17 @@ void OpenBootloader_DeInit(void)
   __HAL_RCC_AHB3_FORCE_RESET();
   __HAL_RCC_AHB3_RELEASE_RESET();
 
+  __HAL_RCC_GPIOC_CLK_DISABLE();
+  __HAL_RCC_GPIOH_CLK_DISABLE();
+  __HAL_RCC_GPIOA_CLK_DISABLE();
+  __HAL_RCC_GPIOB_CLK_DISABLE();
+
+
   SysTick->CTRL = 0;
   SysTick->LOAD = 0;
   SysTick->VAL = 0;
+
+
   OPENBL_DeInit();
 }
 
@@ -163,7 +175,7 @@ void OpenBootloader_CheckforUserProgram(void)
   Function_Pointer appStart;
   uint32_t *userProgStart = (uint32_t*)USERPROG_START_ADDRESS;  // point _vectable to the start of the application at 0x08004000
 
-  if (userProgStart[0] != 0)  // if there is data in sector 1 we assume a program is present
+  if (userProgStart[0] != 0xFFFFFFFF)  // if there is data in sector 1 we assume a program is present
   {
     appStart = (Function_Pointer) userProgStart[1];   // get the address of the application's reset handler by loading the 2nd entry in the table
     SCB->VTOR = (uint32_t)userProgStart;   // point VTOR to the start of the application's vector table
