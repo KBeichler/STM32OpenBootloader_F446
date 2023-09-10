@@ -17,7 +17,7 @@ Links:
 
 ### TODO
 
-- [ ] Implement CAN (not on thios chip, but need it)
+- [ ] Implement CAN (not on this chip, but need it)
 - [ ] Implement Optionbytes Interface correctly
 - [ ] Check system memory interface read (although not needed)
 - [ ] Implement startup code to check if Valid userprogram is installed
@@ -29,5 +29,6 @@ Links:
   	- [ ] check if interrupts are working correctly
   	- [ ] maybe add shared RAM space for communication
   	- [ ] maybe add programm header at beginning of userprogramm section (appversion, crc....)
+- [ ]  keep size of image small as possible (should not exceed 16k)
 
 
