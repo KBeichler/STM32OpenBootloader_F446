@@ -48,7 +48,7 @@ OPENBL_MemoryTypeDef ICP2_Descriptor =
 {
   ICP2_START_ADDRESS,
   ICP2_END_ADDRESS,
-  (28U * 1024U),
+  ICP2_SIZE,
   ICP_AREA,
   OPENBL_ICP_Read,
   NULL,
@@ -59,6 +59,20 @@ OPENBL_MemoryTypeDef ICP2_Descriptor =
   NULL
 };
 
+OPENBL_MemoryTypeDef ICP3_Descriptor =
+{
+  EB_START_ADDRESS,
+  EB_END_ADDRESS,
+  EB_SIZE,
+  ICP_AREA,
+  OPENBL_ICP_Read,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL
+};
 
 /**
   * @brief  This function is used to read data from a given address.
@@ -67,4 +81,6 @@ OPENBL_MemoryTypeDef ICP2_Descriptor =
   */
 uint8_t OPENBL_ICP_Read(uint32_t Address)
 {
+  (void) Address;
+  return 0;
 }

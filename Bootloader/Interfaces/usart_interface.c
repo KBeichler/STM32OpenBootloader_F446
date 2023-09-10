@@ -23,9 +23,6 @@
 #include "openbl_usart_cmd.h"
 #include "usart_interface.h"
 #include "iwdg_interface.h"
-
-#include "stm32f4xx_ll_usart.h"
-
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -66,8 +63,6 @@ static void OPENBL_USART_Init(void)
  */
 void OPENBL_USART_Configuration(void)
 {
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-
   __HAL_RCC_GPIOA_CLK_ENABLE();
   /*
   GPIO_InitStruct.Pin = USARTx_TX_PIN;

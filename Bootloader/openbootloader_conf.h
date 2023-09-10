@@ -31,8 +31,9 @@ extern "C" {
 /* Exported constants --------------------------------------------------------*/
 
 /* -------------------------------- Device ID ------------------------------- */
-#define DEVICE_ID_MSB                     0x04U  /* MSB byte of device ID */
-#define DEVICE_ID_LSB                     0x82U  /* LSB byte of device ID */
+#define DEVICE_ID                         (uint32_t)(READ_BIT(DBGMCU->IDCODE, DBGMCU_IDCODE_DEV_ID))
+#define DEVICE_ID_MSB                     (DEVICE_ID >> 8) & 0xFF    /* MSB byte of device ID */
+#define DEVICE_ID_LSB                     DEVICE_ID & 0xFF          /* LSB byte of device ID */
 
 /* -------------------------- Definitions for Memories ---------------------- */
 #define FLASH_BL_SIZE                     (512 * 1024U)  /* Size of FLASH 512K */
@@ -55,11 +56,15 @@ extern "C" {
 #define ICP_START_ADDRESS                 0x1FFF0000 /* System memory registers address */
 #define ICP_END_ADDRESS                   (ICP_START_ADDRESS + ICP_SIZE)  /* System memory registers end address */
 
-#define ICP2_SIZE                          (30U * 1024U)  /* Size of ICP 32 kByte */
+#define ICP2_SIZE                          (192U * 1024U)  /* Size of ICP 32 kByte */
 #define ICP2_START_ADDRESS                 0x40000000 /* System memory registers address */
 #define ICP2_END_ADDRESS                   0x40030000  /* System memory registers end address */
 
-#define EB_SIZE                           1120U  /* Size of Engi bytes 1120 Byte */
+#define ICP3_SIZE                          (192U * 1024U)  /* Size of ICP 192 kByte */
+#define ICP3_START_ADDRESS                 0x40000000 /* System memory registers address */
+#define ICP3_END_ADDRESS                   0x40030000  /* System memory registers end address */
+
+#define EB_SIZE                           (30U * 1024U)   /* Size of Engi bytes 1120 Byte */
 #define EB_START_ADDRESS                  0x0BFA0500U  /* Engi bytes start address */
 #define EB_END_ADDRESS                    (EB_START_ADDRESS + EB_SIZE)  /* Engi bytes end address  */
 

@@ -37,6 +37,8 @@ static IWDG_HandleTypeDef IWDGHandle;
   */
 void OPENBL_IWDG_Configuration(void)
 {
+  // TODO
+  (void) IWDGHandle;
 }
 
 /**

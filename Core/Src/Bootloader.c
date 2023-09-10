@@ -70,6 +70,7 @@ extern OPENBL_MemoryTypeDef OB_Descriptor;
 extern OPENBL_MemoryTypeDef OTP_Descriptor;
 extern OPENBL_MemoryTypeDef ICP1_Descriptor;
 extern OPENBL_MemoryTypeDef ICP2_Descriptor;
+extern OPENBL_MemoryTypeDef ICP3_Descriptor;
 
 
 
@@ -105,6 +106,7 @@ void OpenBootloader_Init(void)
   OPENBL_MEM_RegisterMemory(&OTP_Descriptor);
   OPENBL_MEM_RegisterMemory(&ICP1_Descriptor);
   OPENBL_MEM_RegisterMemory(&ICP2_Descriptor);
+  OPENBL_MEM_RegisterMemory(&ICP3_Descriptor);
 
 }
 
@@ -158,15 +160,15 @@ void OpenBootloader_ProtocolDetection(void)
 
 void OpenBootloader_CheckforUserProgram(void)
 {
-  Function_Pointer jump_to_address;
-  uint32_t *_vectable = (uint32_t*)USERPROG_START_ADDRESS;  // point _vectable to the start of the application at 0x08004000
+  Function_Pointer appStart;
+  uint32_t *userProgStart = (uint32_t*)USERPROG_START_ADDRESS;  // point _vectable to the start of the application at 0x08004000
 
-  if (_vectable[0] != 0)  // if there is data in sector 1 we assume a program is present
+  if (userProgStart[0] != 0)  // if there is data in sector 1 we assume a program is present
   {
-    jump_to_address = (Function_Pointer) *(_vectable + 1);   // get the address of the application's reset handler by loading the 2nd entry in the table
-    SCB->VTOR = (uint32_t)_vectable;   // point VTOR to the start of the application's vector table
-    Common_SetMsp(*_vectable);   // setup the initial stack pointer using the RAM address contained at the start of the vector table
-    jump_to_address();   // call the application's reset handler
+    appStart = (Function_Pointer) userProgStart[1];   // get the address of the application's reset handler by loading the 2nd entry in the table
+    SCB->VTOR = (uint32_t)userProgStart;   // point VTOR to the start of the application's vector table
+    Common_SetMsp(userProgStart[0]);   // setup the initial stack pointer using the RAM address contained at the start of the vector table
+    appStart();   // call the application's reset handler
   }
 
 }

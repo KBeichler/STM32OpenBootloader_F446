@@ -22,14 +22,12 @@
 #include "Bootloader.h"
 #include "common_interface.h"
 #include "flash_interface.h"
-
-#include "stm32f4xx_hal_flash.h"
 //#include "optionbytes_interface.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
-FLASH_TypeDef * flash = FLASH_R_BASE ;
+FLASH_TypeDef * flash = (FLASH_TypeDef *)FLASH_R_BASE ;
 /* Private variables ---------------------------------------------------------*/
 uint32_t Flash_BusyState = FLASH_BUSY_STATE_DISABLED;
 FLASH_ProcessTypeDef FlashProcess = {.Lock = HAL_UNLOCKED, \
@@ -45,16 +43,6 @@ FLASH_ProcessTypeDef FlashProcess = {.Lock = HAL_UNLOCKED, \
 static ErrorStatus OPENBL_FLASH_EnableWriteProtection(uint8_t *ListOfPages, uint32_t Length);
 static ErrorStatus OPENBL_FLASH_DisableWriteProtection(void);
 static void writeOB(FLASH_OBProgramInitTypeDef *flash_ob);
-#if defined (__ICCARM__)
-__ramfunc static HAL_StatusTypeDef OPENBL_FLASH_SendBusyState(uint32_t Timeout);
-__ramfunc static HAL_StatusTypeDef OPENBL_FLASH_WaitForLastOperation(uint32_t Timeout);
-__ramfunc static HAL_StatusTypeDef OPENBL_FLASH_ExtendedErase(FLASH_EraseInitTypeDef *pEraseInit, uint32_t *pPageError);
-#else
-__attribute__((section(".ramfunc"))) static HAL_StatusTypeDef OPENBL_FLASH_SendBusyState(uint32_t Timeout);
-__attribute__((section(".ramfunc"))) static HAL_StatusTypeDef OPENBL_FLASH_WaitForLastOperation(uint32_t Timeout);
-__attribute__((section(".ramfunc"))) static HAL_StatusTypeDef OPENBL_FLASH_ExtendedErase(
-  FLASH_EraseInitTypeDef *pEraseInit, uint32_t *pPageError);
-#endif /* (__ICCARM__) */
 
 /* Exported variables --------------------------------------------------------*/
 OPENBL_MemoryTypeDef FLASH_Descriptor =
@@ -123,7 +111,6 @@ void OPENBL_FLASH_Write(uint32_t Address, uint8_t *pData, uint32_t DataLength)
   uint32_t index  = 0U;
   uint32_t length = DataLength;
   uint64_t CurrentWord = 0;
-  uint32_t CurrentHalf = 0;
 
   if (length & 7U)
   {
@@ -135,15 +122,10 @@ void OPENBL_FLASH_Write(uint32_t Address, uint8_t *pData, uint32_t DataLength)
   __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_ALL_ERRORS);
 
   for (index = 0U; index < length; (index += 8U))
-  { // TODO check if thi sis sufficient
-
+  { 
     CurrentWord = (uint64_t)(*((uint64_t *)((uint32_t)pData + index)));
-    HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD,
-                      (Address + index), 
-                      CurrentWord & 0xFFFFFFFF);
-    HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD,
-                     (Address + index + 4), 
-                      CurrentWord >> 32);
+    HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, (Address + index), CurrentWord & 0xFFFFFFFF);
+    HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, (Address + index + 4), CurrentWord >> 32);
   }
 
   /* Lock the Flash to disable the flash control register access */
@@ -157,7 +139,7 @@ void OPENBL_FLASH_Write(uint32_t Address, uint8_t *pData, uint32_t DataLength)
   */
 void OPENBL_FLASH_JumpToAddress(uint32_t Address)
 {
-  Function_Pointer jump_to_address;
+  Function_Pointer appStart;
 
   /* Deinitialize all HW resources used by the Bootloader to their reset values */
   OpenBootloader_DeInit();
@@ -165,18 +147,13 @@ void OPENBL_FLASH_JumpToAddress(uint32_t Address)
   /* Enable IRQ */
   Common_EnableIrq();
 
-  //ump_to_address = (Function_Pointer)(*(__IO uint32_t *)(Address + 4U));
+  uint32_t *userProgStart = (uint32_t*)Address;  // pointer to the start of the application at 0x08004000
 
-  /* Initialize user application's stack pointer */
-  //Common_SetMsp(*(__IO uint32_t *) Address);
+  appStart = (Function_Pointer) userProgStart[1];   // get the address of the application's reset handler by loading the 2nd entry in the table
+  SCB->VTOR = (uint32_t)userProgStart;   // point VTOR to the start of the application's vector table
+  Common_SetMsp(userProgStart[0]);   // setup the initial stack pointer using the RAM address contained at the start of the vector table
+  appStart();   // call the application's reset handler
 
-  //jump_to_address();
-
-  uint32_t *_vectable = (__IO uint32_t*)Address;  // point _vectable to the start of the application at 0x08004000
-  jump_to_address = (Function_Pointer) *(_vectable + 1);   // get the address of the application's reset handler by loading the 2nd entry in the table
-  SCB->VTOR = (uint32_t )_vectable;   // point VTOR to the start of the application's vector table
-  Common_SetMsp(*_vectable);   // setup the initial stack pointer using the RAM address contained at the start of the vector table
-  jump_to_address();   // call the application's reset handler
 }
 
 /**
@@ -387,66 +364,13 @@ static ErrorStatus OPENBL_FLASH_DisableWriteProtection(void)
   return status;
 }
 
-/**
-  * @brief  Wait for a FLASH operation to complete.
-  * @param  Timeout maximum flash operation timeout.
-  * @retval HAL_Status
-  */
-#if defined (__ICCARM__)
-__ramfunc static HAL_StatusTypeDef OPENBL_FLASH_SendBusyState(uint32_t Timeout)
-#else
-__attribute__((section(".ramfunc"))) static HAL_StatusTypeDef OPENBL_FLASH_SendBusyState(uint32_t Timeout)
-#endif /* (__ICCARM__) */
-{
-  HAL_StatusTypeDef status;
-  status = FLASH_WaitForLastOperation(Timeout);
-  return status;
-}
-
-/**
-  * @brief  Wait for a FLASH operation to complete.
-  * @param  Timeout maximum flash operation timeout.
-  * @retval HAL_Status
-  */
-#if defined (__ICCARM__)
-__ramfunc static HAL_StatusTypeDef OPENBL_FLASH_WaitForLastOperation(uint32_t Timeout)
-#else
-__attribute__((section(".ramfunc"))) static HAL_StatusTypeDef OPENBL_FLASH_WaitForLastOperation(uint32_t Timeout)
-#endif /* (__ICCARM__) */
-{
-  HAL_StatusTypeDef status = HAL_OK;
-  status = FLASH_WaitForLastOperation(Timeout);
-  return status;
-}
-
-/**
-  * @brief  Perform a mass erase or erase the specified FLASH memory pages.
-  * @param[in]  pEraseInit pointer to an FLASH_EraseInitTypeDef structure that
-  *         contains the configuration information for the erasing.
-  * @param[out]  PageError pointer to variable that contains the configuration
-  *         information on faulty page in case of error (0xFFFFFFFF means that all
-  *         the pages have been correctly erased).
-  * @retval HAL_Status
-  */
-#if defined (__ICCARM__)
-__ramfunc static HAL_StatusTypeDef OPENBL_FLASH_ExtendedErase(FLASH_EraseInitTypeDef *pEraseInit, uint32_t *PageError)
-#else
-__attribute__((section(".ramfunc"))) static HAL_StatusTypeDef OPENBL_FLASH_ExtendedErase(
-  FLASH_EraseInitTypeDef *pEraseInit, uint32_t *PageError)
-#endif /* (__ICCARM__) */
-{
-  HAL_StatusTypeDef status;
-
-  return status;
-}
-
 
 static void writeOB(FLASH_OBProgramInitTypeDef *flash_ob)
 {
   OPENBL_FLASH_Unlock();
   HAL_FLASH_OB_Unlock();
   /* set the Option bytes configuration */
-  HAL_FLASHEx_OBProgram(&flash_ob);
+  HAL_FLASHEx_OBProgram(flash_ob);
   OPENBL_FLASH_Lock();
   HAL_FLASH_OB_Lock(); 
 }
