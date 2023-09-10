@@ -25,5 +25,9 @@ Links:
 - [ ] Check if Bootloader Deinit is sufficient
 - [ ] check if Specialcommands are needed
 - [ ] check if the user program start address can be read on compile time (now its hardcoded into openbootloader_conf.h)
+- [ ] more testing on userprograms.
+  	- [ ] check if interrupts are working correctly
+  	- [ ] maybe add shared RAM space for communication
+  	- [ ] maybe add programm header at beginning of userprogramm section (appversion, crc....)
 
 
