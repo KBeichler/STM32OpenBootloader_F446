@@ -24,8 +24,6 @@
 #include "openbl_core.h"
 #include "usart_interface.h" 
 #include "Bootloader.h"
-
-#include "test.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

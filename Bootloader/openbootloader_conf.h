@@ -29,6 +29,7 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
+#define USERPROG_START_ADDRESS  0x8004000 
 
 /* -------------------------------- Device ID ------------------------------- */
 #define DEVICE_ID                         (uint32_t)(READ_BIT(DBGMCU->IDCODE, DBGMCU_IDCODE_DEV_ID))
