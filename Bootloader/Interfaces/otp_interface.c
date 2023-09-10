@@ -28,7 +28,6 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
-static void OPENBL_OTP_ProgramDoubleWord(uint32_t Address, uint64_t Data);
 
 /* Exported variables --------------------------------------------------------*/
 OPENBL_MemoryTypeDef OTP_Descriptor =
@@ -67,16 +66,9 @@ uint8_t OPENBL_OTP_Read(uint32_t Address)
   */
 void OPENBL_OTP_Write(uint32_t Address, uint8_t *Data, uint32_t DataLength)
 {
+  (void) Address;
+  (void) Data;
+  (void) DataLength;
 }
 
 /* Private functions ---------------------------------------------------------*/
-
-/**
-  * @brief  Program double word at a specified FLASH address.
-  * @param  Address specifies the address to be programmed.
-  * @param  Data specifies the data to be programmed.
-  * @retval None.
-  */
-static void OPENBL_OTP_ProgramDoubleWord(uint32_t Address, uint64_t Data)
-{
-}

@@ -62,7 +62,7 @@ static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
-typedef void (*Function_Pointer)(void);
+
 /**
   * @brief  The application entry point.
   * @retval int
@@ -70,7 +70,7 @@ typedef void (*Function_Pointer)(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  // OpenBootloader_CheckforUserProgram();
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/

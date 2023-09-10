@@ -29,6 +29,8 @@ void OpenBootloader_Init(void);
 void OpenBootloader_DeInit(void);
 void OpenBootloader_ProtocolDetection(void);
 
+void OpenBootloader_CheckforUserProgram(void);
+
 #endif /* APP_OPENBOOTLOADER_H */
 
 

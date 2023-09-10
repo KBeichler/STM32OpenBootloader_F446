@@ -134,7 +134,7 @@ void OPENBL_FLASH_Write(uint32_t Address, uint8_t *pData, uint32_t DataLength)
   OPENBL_FLASH_Unlock();
   __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_ALL_ERRORS);
 
-  for (index = 0U; index < length; (index += 4U))
+  for (index = 0U; index < length; (index += 8U))
   { // TODO check if thi sis sufficient
 
     CurrentWord = (uint64_t)(*((uint64_t *)((uint32_t)pData + index)));
@@ -142,7 +142,7 @@ void OPENBL_FLASH_Write(uint32_t Address, uint8_t *pData, uint32_t DataLength)
                       (Address + index), 
                       CurrentWord & 0xFFFFFFFF);
     HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD,
-                     (Address + index), 
+                     (Address + index + 4), 
                       CurrentWord >> 32);
   }
 
@@ -174,7 +174,7 @@ void OPENBL_FLASH_JumpToAddress(uint32_t Address)
 
   uint32_t *_vectable = (__IO uint32_t*)Address;  // point _vectable to the start of the application at 0x08004000
   jump_to_address = (Function_Pointer) *(_vectable + 1);   // get the address of the application's reset handler by loading the 2nd entry in the table
-  SCB->VTOR = _vectable;   // point VTOR to the start of the application's vector table
+  SCB->VTOR = (uint32_t )_vectable;   // point VTOR to the start of the application's vector table
   Common_SetMsp(*_vectable);   // setup the initial stack pointer using the RAM address contained at the start of the vector table
   jump_to_address();   // call the application's reset handler
 }

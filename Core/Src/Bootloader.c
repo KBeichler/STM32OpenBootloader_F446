@@ -30,13 +30,7 @@
 #include "optionbytes_interface.h"
 /*
 #include "i2c_interface.h"
-
-
-
-
 #include "otp_interface.h"
-
-
 #include "openbl_i2c_cmd.h"
 */
 
@@ -160,6 +154,21 @@ void OpenBootloader_ProtocolDetection(void)
   {
     OPENBL_CommandProcess();
   }
+}
+
+void OpenBootloader_CheckforUserProgram(void)
+{
+  Function_Pointer jump_to_address;
+  uint32_t *_vectable = (uint32_t*)USERPROG_START_ADDRESS;  // point _vectable to the start of the application at 0x08004000
+
+  if (_vectable[0] != 0)  // if there is data in sector 1 we assume a program is present
+  {
+    jump_to_address = (Function_Pointer) *(_vectable + 1);   // get the address of the application's reset handler by loading the 2nd entry in the table
+    SCB->VTOR = (uint32_t)_vectable;   // point VTOR to the start of the application's vector table
+    Common_SetMsp(*_vectable);   // setup the initial stack pointer using the RAM address contained at the start of the vector table
+    jump_to_address();   // call the application's reset handler
+  }
+
 }
 
 
