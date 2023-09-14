@@ -18,7 +18,7 @@ Links:
 ### TODO
 
 #### Prio 1
-- [ ] Timing is off when Programm is uploaded via bootloader? RRC config is not the same
+- [x] Timing is off when Programm is uploaded via bootloader? RRC config is not the same (seems OK)
 - [ ] Implement Optionbytes Interface correctly
 - [ ] Check if Bootloader Deinit is sufficient
 
@@ -47,4 +47,9 @@ extern const uint32_t g_pfnVectors[];
 SCB->VTOR = (uint32_t)&g_pfnVectors[0];
 ```
 
+## HowTo Debug Bootloaded App
+
+In CUBE IDE select your application that you uploaded via the Bootloader. In the Debug Config set under startup that  __no__ download happens when starting to debug. Now you can step through the application.
+
+[Shameless Link](https://github.com/ethanhuanginst/STM32CubeIDE-Workshop-2019/tree/master/hands-on/09_BOOT-APP)
 

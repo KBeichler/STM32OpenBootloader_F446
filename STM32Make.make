@@ -75,7 +75,7 @@ CPP_SOURCES = \
 
 # ASM sources
 ASM_SOURCES =  \
-Core/Src/startup_stm32f446xx.S
+Core/Src/startup_stm32f446xx.s
 
 
 
