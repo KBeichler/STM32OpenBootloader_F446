@@ -124,8 +124,7 @@ void OPENBL_FLASH_Write(uint32_t Address, uint8_t *pData, uint32_t DataLength)
   for (index = 0U; index < length; (index += 8U))
   { 
     CurrentWord = (uint64_t)(*((uint64_t *)((uint32_t)pData + index)));
-    HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, (Address + index), CurrentWord & 0xFFFFFFFF);
-    HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, (Address + index + 4), CurrentWord >> 32);
+    OPENBL_WriteDoubleWord(Address + index, CurrentWord);
   }
 
   /* Lock the Flash to disable the flash control register access */

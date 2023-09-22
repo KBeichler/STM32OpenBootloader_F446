@@ -22,6 +22,7 @@
 #include "Bootloader.h"
 #include "common_interface.h"
 #include "optionbytes_interface.h"
+#include "flash_interface.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -79,9 +80,36 @@ void BL_FLASH_WriteOptKeys(void)
   * @param  DataLength The length of the data to be written.
   * @retval None.
   */
-void OPENBL_OB_Write(uint32_t Address, uint8_t *Data, uint32_t DataLength)
+void OPENBL_OB_Write(uint32_t Address, uint8_t *pData, uint32_t length)
 {
-  /* Unlock the FLASH & Option Bytes Registers access */
+  /* The actual data send by the CubeProgrammer is somethink like this
+    0x ef aa 10 55 ef aa 10 55 7f 3f 00 c0 ff 3f 00 c0
+    Thats new values  byte 0 and byte 1:  ef  aa
+    Then the XOR of these values:         10  55 
+    Then the old values for byte 0 and 1: ef  aa
+    And the XOr again                     10  55
+    Then new values for byte 3 and 4:     7f  3f
+    Their XOR values (here not :/ )       00  c0
+    Then the old values of these bytes:   ff  3f
+    And their XOR vales                   00  c0               
 
-  //SET_BIT(FLASH->CR, FLASH_CR_OPTSTRT);
+  */
+  __IO uint8_t *pOBBase;
+  /* Unlock the FLASH & Option Bytes Registers access */
+  HAL_FLASH_Unlock();
+  HAL_FLASH_OB_Unlock();
+  FLASH->OPTCR &= ~FLASH_OPTCR_OPTLOCK;
+  __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_ALL_ERRORS);
+#ifdef __STM32F446xx_H
+    pOBBase = ( __IO uint8_t *) OPTCR_BYTE0_ADDRESS;
+    /* STM CubeProgrammer sets OPSTRT and OPTLOCK Flag, and thus we cannot change any other values afterwords.
+    *  This flags will be set by HAL_FLASH_OB_Launch later, thats why we ignore them here */
+    pOBBase[0] = pData[0] & ~(FLASH_OPTCR_OPTSTRT | FLASH_OPTCR_OPTLOCK);     
+    pOBBase[1] = pData[1];
+    pOBBase[2] = pData[8];
+    pOBBase[3] = pData[9];
+#endif
+  HAL_FLASH_OB_Launch();
+  HAL_FLASH_OB_Lock();
+  HAL_FLASH_Lock();
 }

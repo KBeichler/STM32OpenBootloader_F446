@@ -36,8 +36,9 @@ void Common_EnableIrq(void);
 void Common_DisableIrq(void);
 FlagStatus Common_GetProtectionStatus(void);
 void Common_SetPostProcessingCallback(Function_Pointer Callback);
-void Common_StartPostProcessing(void);
-
+void Common_StartPostProcessing(uint32_t Address);
+void OPENBL_WriteDoubleWord(uint32_t Address, uint64_t word);
+void OPENBL_WriteWord(uint32_t Address, uint32_t word);
 #ifdef __cplusplus
 }
 #endif

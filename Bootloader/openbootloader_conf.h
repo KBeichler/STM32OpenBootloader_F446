@@ -45,7 +45,7 @@ extern "C" {
 #define RAM_START_ADDRESS                 0x20000000U  /* start of SRAM  */
 #define RAM_END_ADDRESS                   (RAM_START_ADDRESS + RAM_SIZE)  /* end of SRAM  */
 
-#define OB_SIZE                           16U  /* Size of OB 64 Byte */
+#define OB_SIZE                           16U  /* Size of OB 16 Byte */
 #define OB_START_ADDRESS                  0x1FFFC000  /* Option bytes registers address */
 #define OB_END_ADDRESS                    (OB_START_ADDRESS + OB_SIZE)  /* Option bytes end address*/
 

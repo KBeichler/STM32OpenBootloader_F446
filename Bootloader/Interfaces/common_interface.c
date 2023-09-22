@@ -84,6 +84,21 @@ void Common_SetPostProcessingCallback(Function_Pointer Callback)
   * @brief  Start post processing task.
   * @retval None.
   */
-void Common_StartPostProcessing()
+void Common_StartPostProcessing(uint32_t Address)
 {
+  if (Address == OB_START_ADDRESS )// after a write to optionbytes, do a reset
+  {
+    //NVIC_SystemReset();
+  }
+}
+
+void OPENBL_WriteDoubleWord(uint32_t Address, uint64_t word)
+{
+    HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, (Address ), word & 0xFFFFFFFF);
+    HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, (Address + 4), word >> 32);
+}
+
+void OPENBL_WriteWord(uint32_t Address, uint32_t word)
+{
+    HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, (Address ), word);
 }

@@ -19,8 +19,8 @@ Links:
 
 #### Prio 1
 - [x] Timing is off when Programm is uploaded via bootloader? RRC config is not the same (seems OK)
-- [ ] Implement Optionbytes Interface correctly
-- [ ] Check if Bootloader Deinit is sufficient
+- [x] Implement Optionbytes Interface correctly (for f446)
+- [x] Check if Bootloader Deinit is sufficient
 
 #### Prio 2
 - [ ] Implement CAN (not on this chip, but need it)

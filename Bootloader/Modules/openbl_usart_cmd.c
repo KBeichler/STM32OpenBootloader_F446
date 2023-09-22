@@ -281,7 +281,7 @@ void OPENBL_USART_WriteMemory(void)
         OPENBL_USART_SendByte(ACK_BYTE);
 
         /* Start post processing task if needed */
-        Common_StartPostProcessing();
+        Common_StartPostProcessing(address);
       }
     }
   }
@@ -351,7 +351,7 @@ void OPENBL_USART_ReadoutProtect(void)
     OPENBL_USART_SendByte(ACK_BYTE);
 
     /* Start post processing task if needed */
-    Common_StartPostProcessing();
+    Common_StartPostProcessing(0x00);
   }
 }
 
@@ -372,7 +372,7 @@ void OPENBL_USART_ReadoutUnprotect(void)
   OPENBL_MEM_SetReadOutProtection(OPENBL_DEFAULT_MEM, DISABLE);
 
   /* Start post processing task if needed */
-  Common_StartPostProcessing();
+  Common_StartPostProcessing(0x00);
 }
 
 /**
@@ -560,7 +560,7 @@ void OPENBL_USART_WriteProtect(void)
 
       if (error_value == SUCCESS)
       {
-        Common_StartPostProcessing();
+        Common_StartPostProcessing(0x00);
       }
     }
   }
@@ -590,7 +590,7 @@ void OPENBL_USART_WriteUnprotect(void)
 
     if (error_value == SUCCESS)
     {
-      Common_StartPostProcessing();
+      Common_StartPostProcessing(0x00);
     }
   }
 }
