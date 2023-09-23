@@ -95,21 +95,24 @@ void OPENBL_OB_Write(uint32_t Address, uint8_t *pData, uint32_t length)
 
   */
   __IO uint8_t *pOBBase;
+  uint16_t dataLength = length / 8; // length is in bytes, STM cube programmer always sends 6t4 bit doublewords
   /* Unlock the FLASH & Option Bytes Registers access */
-  HAL_FLASH_Unlock();
   HAL_FLASH_OB_Unlock();
-  FLASH->OPTCR &= ~FLASH_OPTCR_OPTLOCK;
   __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_ALL_ERRORS);
+
 #ifdef __STM32F446xx_H
     pOBBase = ( __IO uint8_t *) OPTCR_BYTE0_ADDRESS;
     /* STM CubeProgrammer sets OPSTRT and OPTLOCK Flag, and thus we cannot change any other values afterwords.
     *  This flags will be set by HAL_FLASH_OB_Launch later, thats why we ignore them here */
-    pOBBase[0] = pData[0] & ~(FLASH_OPTCR_OPTSTRT | FLASH_OPTCR_OPTLOCK);     
-    pOBBase[1] = pData[1];
-    pOBBase[2] = pData[8];
-    pOBBase[3] = pData[9];
+    pData[0] &= ~(FLASH_OPTCR_OPTSTRT | FLASH_OPTCR_OPTLOCK);   
+
+   for (uint16_t i = 0; i < dataLength; i++ )
+   {
+      pOBBase[(i * 2)]      = pData[(i * 8)];
+      pOBBase[(i * 2) + 1]  = pData[(i * 8) + 1];
+   }
 #endif
+
   HAL_FLASH_OB_Launch();
   HAL_FLASH_OB_Lock();
-  HAL_FLASH_Lock();
 }

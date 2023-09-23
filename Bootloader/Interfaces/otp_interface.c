@@ -66,6 +66,7 @@ uint8_t OPENBL_OTP_Read(uint32_t Address)
   */
 void OPENBL_OTP_Write(uint32_t Address, uint8_t *Data, uint32_t DataLength)
 {
+  // TODO
   (void) Address;
   (void) Data;
   (void) DataLength;

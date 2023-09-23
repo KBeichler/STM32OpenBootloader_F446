@@ -37,8 +37,11 @@ static IWDG_HandleTypeDef IWDGHandle;
   */
 void OPENBL_IWDG_Configuration(void)
 {
-  // TODO
-  (void) IWDGHandle;
+  IWDGHandle.Instance       = IWDG;
+  IWDGHandle.Init.Prescaler = IWDG_PRESCALER_256;
+  IWDGHandle.Init.Reload    = IWDG_KEY_RELOAD;
+
+  HAL_IWDG_Init(&IWDGHandle);
 }
 
 /**
@@ -47,4 +50,5 @@ void OPENBL_IWDG_Configuration(void)
   */
 void OPENBL_IWDG_Refresh(void)
 {
+  HAL_IWDG_Refresh(&IWDGHandle);
 }

@@ -86,9 +86,9 @@ void Common_SetPostProcessingCallback(Function_Pointer Callback)
   */
 void Common_StartPostProcessing(uint32_t Address)
 {
-  if (Address == OB_START_ADDRESS )// after a write to optionbytes, do a reset
+  if (Address == OB_START_ADDRESS ) // after a write to optionbytes, do a reset
   {
-    //NVIC_SystemReset();
+    NVIC_SystemReset();
   }
 }
 

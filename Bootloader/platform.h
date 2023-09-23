@@ -28,11 +28,6 @@ extern "C" {
 #include "main.h"
 #include "cmsis_gcc.h"
 #include "stm32f4xx_hal.h"
-#include "stm32f4xx_ll_usart.h"
-#include "stm32f4xx_ll_system.h"
-#include "stm32f4xx_hal_rcc.h"
-#include "stm32f4xx_hal_flash.h"
-#include "stm32f4xx_hal_iwdg.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/

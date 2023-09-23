@@ -34,9 +34,9 @@ Links:
 #### Prio 3 
 - [ ] Implement startup code to check if Valid userprogram is installed (now we just check if there is data in Flash sector 2)´
 - [ ] check if the user program start address can be read on compile time (now its hardcoded into openbootloader_conf.h)
-- [ ]  keep size of image small as possible (should not exceed 16k)
+- [ ] keep size of image small as possible (should not exceed 16k)
 - [ ] Check system memory interface read (although not needed)
-- [ ] check if Specialcommands are needed
+- [x] check if Specialcommands are needed. __nope__
 
 # Infos
 
