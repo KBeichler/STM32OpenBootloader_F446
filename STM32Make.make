@@ -36,6 +36,7 @@ BUILD_DIR = build
 ######################################
 # C sources
 C_SOURCES =  \
+Bootloader/Bootloader.c \
 Bootloader/Interfaces/common_interface.c \
 Bootloader/Interfaces/flash_interface.c \
 Bootloader/Interfaces/iwdg_interface.c \
@@ -47,7 +48,6 @@ Bootloader/Interfaces/usart_interface.c \
 Bootloader/Modules/openbl_mem.c \
 Bootloader/Modules/openbl_usart_cmd.c \
 Bootloader/openbl_core.c \
-Core/Src/Bootloader.c \
 Core/Src/main.c \
 Core/Src/stm32f4xx_hal_msp.c \
 Core/Src/stm32f4xx_it.c \

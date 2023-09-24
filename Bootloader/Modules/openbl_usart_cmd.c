@@ -323,8 +323,10 @@ void OPENBL_USART_Go(void)
       {
         /* If the jump address is valid then send ACK */
         OPENBL_USART_SendByte(ACK_BYTE);
-
-        OPENBL_MEM_JumpToAddress(address);
+        /* we do a system reset here, otherwise the wathcdog wills till be active
+        in the user program */
+        NVIC_SystemReset();
+        //OPENBL_MEM_JumpToAddress(address);
       }
     }
   }
